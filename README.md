@@ -345,6 +345,10 @@ Trên **task sentiment analysis**
 - Dữ liệu gồm 2 cột chính: `sentence` và `sentiment` (positive, negative, neutral)
 - Dữ liệu gồm **11,426 dòng** cho train và **3,166 dòng** cho test
 
+#### Model sử dụng để phân loại
+
+-Ứng dụng logistic regression cho mọi embedding
+
 #### 📏 Độ đo sử dụng
 
 - Accuracy
@@ -361,6 +365,13 @@ Trên **task sentiment analysis**
 
 ---
 
-<div align="center">
-  <p>Made with ❤️ for CS221 Project</p>
-</div>
+## 📝 Citation
+
+```bibtex
+@article{li2023angle,
+  title={AnglE-optimized Text Embeddings},
+  author={Li, Xianming and Li, Jing},
+  journal={arXiv preprint arXiv:2309.12871},
+  year={2023}
+}
+```
