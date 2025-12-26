@@ -140,7 +140,55 @@ python eval_nli.py \
 --model_name_or_path SeanLee97/angle-llama-7b-nli-v2 \
 --pooling_strategy cls_avg
 ```
+#### Huấn luyện NLI cho STS Benchmark
+##### 1. Chuẩn bị gpu enviroment
 
+##### 2. Cài đặt angle_emb
+
+```bash
+python -m pip install -U angle_emb
+$ cd examples/NLI
+```
+##### 3. Tải xuống dữ liệu
+
+1) Tải xuống dữ liệu multi_nli + snli:
+   
+```bash
+$ cd data
+$ sh download_data.sh
+```
+
+2) Tải xuống STS datasets
+
+```bash
+$
+$ cd SentEval/data/downstream
+$ bash download_dataset.sh
+```
+##### 4. Training
+###### 4.1 Bert
+
+```bash
+python -m angle_emb.angle_trainer \
+--train_name_or_path SeanLee97/all_nli_angle_format_a \
+--save_dir ckpts/bert-base-nli-test \
+--model_name_or_path google-bert/bert-base-uncased \
+--pooling_strategy cls \
+--maxlen 128 \
+--ibn_w 30.0 \
+--cosine_w 0.0 \
+--angle_w 1.0 \
+--angle_tau 20.0 \
+--learning_rate 5e-5 \
+--logging_steps 10 \
+--save_steps 100 \
+--warmup_steps 50 \
+--batch_size 128 \
+--seed 42 \
+--gradient_accumulation_steps 16 \
+--epochs 10 \
+--fp16 1
+```
 ---
 
 
