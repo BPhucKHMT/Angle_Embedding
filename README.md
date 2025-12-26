@@ -79,12 +79,6 @@ Angle_Embedding/
 ```
 
 
-**Loss**:
-- 📐 AnglE loss (ACL24)
-- ⚖ Contrastive loss
-- 📏 CoSENT loss
-- ☕️ Espresso loss (ICLR 2025, a.k.a 2DMSE, detail: [README_ESE](README_ESE.md))
-
 **Backbones**:
 - BERT-based models (BERT, RoBERTa, ModernBERT, etc.)
 - LLM-based models (LLaMA, Mistral, Qwen, etc.)
@@ -95,20 +89,24 @@ Angle_Embedding/
 - Multi-GPU training
 
 
-> <a href="http://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="http://makeapullrequest.com" /></a> 
-    More features will be added in the future. 
 
-## 🏆 Achievements
+## 🛠️ Cài đặt
+### Sử dụng Conda
 
-📅  May 16, 2024 | Paper "[AnglE: Angle-optimized Text Embeddings](https://arxiv.org/abs/2309.12871)" is accepted by ACL 2024 Main Conference.
+```bash
+git clone https://github.com/BPhucKHMT/Angle_Embedding.git
+cd Angle_Embedding
 
-📅  Mar 13, 2024 | Paper "[BeLLM: Backward Dependency Enhanced Large Language Model for Sentence Embeddings](https://arxiv.org/abs/2311.05296)" is accepted by NAACL 2024 Main Conference.
+# Tạo environment mới với Python 3.10
+conda create -n angle python=3.10 -y
 
+# Kích hoạt environment
+conda activate angle
 
-📅  Mar 8, 2024 | 🍞 [mixedbread's embedding](https://www.mixedbread.ai/blog/mxbai-embed-large-v1) ([mixedbread-ai/mxbai-embed-large-v1](https://huggingface.co/mixedbread-ai/mxbai-embed-large-v1)) achieves SOTA on the [MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard) with an average score of **64.68**! The model is trained using AnglE. Congrats mixedbread!
+pip install -e .
+```
 
-
-📅  Dec 4, 2023 | Our universal sentence embedding [WhereIsAI/UAE-Large-V1](https://huggingface.co/WhereIsAI/UAE-Large-V1) achieves SOTA on the [MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard) with an average score of **64.64**! The model is trained using AnglE.
+### Cách 2: sử dụng uv
 
 
 📅 Dec, 2023 | AnglE achieves SOTA performance on the STS Bechmark Semantic Textual Similarity! 
