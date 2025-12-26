@@ -11,7 +11,31 @@ Có thể sử dụng thư viện để áp dụng vào bài toán khác 1 cách
 
 Thư viện này từ paper: [AnglE: Angle-optimized Text Embeddings](https://arxiv.org/abs/2309.12871).
 
-## ✨ Features
+## ✨ Cấu trúc thư mục
+
+```
+CS221/
+├── README.md                   # File này
+├── instructor-embedding/       # Source code chính
+│   ├── demo.ipynb              # Notebook demo: GTR-T5 vs INSTRUCTOR
+│   ├── train.py                # Script huấn luyện
+│   ├── requirements.txt        # Dependencies
+│   ├── setup.py                # Package setup
+│   ├── instructor.png          # Hình minh họa kiến trúc
+│   │
+│   ├── InstructorEmbedding/    # Core module
+│   │   ├── __init__.py
+│   │   └── instructor.py       # INSTRUCTOR model class
+│   │
+│   ├── input/                  # Training data
+│   │   └── medi-data.json      # MEDI dataset (1.4M+ samples)
+│   │
+│   └── evaluation/             # Evaluation tools
+│       ├── MTEB/               # MTEB benchmark
+│       ├── prompt_retrieval/   # Prompt retrieval evaluation
+│       └── text_evaluation/    # Text evaluation
+```
+
 
 **Loss**:
 - 📐 AnglE loss (ACL24)
