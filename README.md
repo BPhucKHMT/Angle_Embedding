@@ -151,14 +151,14 @@ $ cd examples/NLI
 ```
 ##### 3. Tải xuống dữ liệu
 
-3.1 Tải xuống dữ liệu multi_nli + snli:
+###### 3.1 Tải xuống dữ liệu multi_nli + snli:
    
 ```bash
 $ cd data
 $ sh download_data.sh
 ```
 
-3.2 Tải xuống STS datasets
+###### 3.2 Tải xuống STS datasets
 
 ```bash
 $
