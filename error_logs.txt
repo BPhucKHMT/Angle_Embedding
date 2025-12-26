@@ -1,0 +1,106 @@
+2025-12-26 01:57:43.226307 >>> StackOverflowDupQuestions
+Traceback (most recent call last):
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\mteb\evaluation\MTEB.py", line 235, in run
+    results = task.evaluate(model, split, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\mteb\abstasks\AbsTaskReranking.py", line 21, in evaluate
+    data_split = self.dataset[split]
+                 ~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\datasets\dataset_dict.py", line 86, in __getitem__
+    return super().__getitem__(k)
+           ^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'validation'
+
+
+2025-12-26 03:08:31.468619 >>> TwitterURLCorpus
+Traceback (most recent call last):
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\mteb\evaluation\MTEB.py", line 246, in run
+    json.dump(task_results, f_out, indent=2, sort_keys=True)
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\json\__init__.py", line 179, in dump
+    for chunk in iterable:
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\json\encoder.py", line 432, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\json\encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\json\encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\json\encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\json\encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type float32 is not JSON serializable
+
+
+2025-12-26 03:08:33.837921 >>> MassiveScenarioClassification
+Traceback (most recent call last):
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\mteb\evaluation\MTEB.py", line 225, in run
+    task.load_data(eval_splits=task_eval_splits)
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\mteb\abstasks\MultilingualTask.py", line 25, in load_data
+    self.dataset[lang] = datasets.load_dataset(
+                         ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\datasets\load.py", line 1492, in load_dataset
+    builder_instance = load_dataset_builder(
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\datasets\load.py", line 1137, in load_dataset_builder
+    dataset_module = dataset_module_factory(
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\datasets\load.py", line 1036, in dataset_module_factory
+    raise e1 from None
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\datasets\load.py", line 994, in dataset_module_factory
+    raise RuntimeError(f"Dataset scripts are no longer supported, but found {filename}")
+RuntimeError: Dataset scripts are no longer supported, but found amazon_massive_scenario.py
+
+
+2025-12-26 03:08:40.127405 >>> SICK-R
+Traceback (most recent call last):
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\mteb\evaluation\MTEB.py", line 235, in run
+    results = task.evaluate(model, split, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\mteb\abstasks\AbsTaskSTS.py", line 37, in evaluate
+    data_split = self.dataset[split]
+                 ~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\datasets\dataset_dict.py", line 86, in __getitem__
+    return super().__getitem__(k)
+           ^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'validation'
+
+
+2025-12-26 03:08:40.213403 >>> DBPedia
+Traceback (most recent call last):
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\mteb\abstasks\BeIRTask.py", line 16, in load_data
+    from beir import util
+ModuleNotFoundError: No module named 'beir'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\mteb\evaluation\MTEB.py", line 225, in run
+    task.load_data(eval_splits=task_eval_splits)
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\mteb\abstasks\BeIRTask.py", line 18, in load_data
+    raise Exception("Retrieval tasks require beir package. Please install it with `pip install mteb[beir]`")
+Exception: Retrieval tasks require beir package. Please install it with `pip install mteb[beir]`
+
+
+2025-12-26 03:08:42.890691 >>> STS17
+Traceback (most recent call last):
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\mteb\evaluation\MTEB.py", line 225, in run
+    task.load_data(eval_splits=task_eval_splits)
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\mteb\abstasks\CrosslingualTask.py", line 25, in load_data
+    self.dataset[lang] = datasets.load_dataset(
+                         ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\datasets\load.py", line 1492, in load_dataset
+    builder_instance = load_dataset_builder(
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\datasets\load.py", line 1137, in load_dataset_builder
+    dataset_module = dataset_module_factory(
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\datasets\load.py", line 1036, in dataset_module_factory
+    raise e1 from None
+  File "C:\Users\ADMIN\anaconda3\envs\cs221\Lib\site-packages\datasets\load.py", line 994, in dataset_module_factory
+    raise RuntimeError(f"Dataset scripts are no longer supported, but found {filename}")
+RuntimeError: Dataset scripts are no longer supported, but found sts17-crosslingual-sts.py
+
+

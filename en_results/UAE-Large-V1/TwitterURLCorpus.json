@@ -1,0 +1,8 @@
+{
+  "dataset_revision": "8b6510b0b1fa4e4c4f879467980e9be563ec1cdf",
+  "mteb_dataset_name": "TwitterURLCorpus",
+  "mteb_version": "1.0.0",
+  "test": {
+    "cos_sim": {
+      "accuracy": 0.8909457833663212,
+      "accuracy_threshold": 
