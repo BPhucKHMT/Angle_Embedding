@@ -293,8 +293,12 @@ Dữ liệu gồm 2 cột chính: sentence và sentiment ( postive, negative, ne
 Dữ liệu gồm 11426 dòng cho train và 3166 dòng cho test
 
 #### Độ đo sử dụng
-
-Precision, Recall, F1-score, Accuracy
+ Accuracy, F1-score, 
 
 ## Bảng so sánh giữa các model trên task sentiment analysis
 
+<p align="center">
+  <img src="assets/sentiment.png" alt="sentiment" width="600"/>
+   <br>
+  <em>Sentiment analysis </em>
+</p>
