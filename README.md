@@ -246,7 +246,7 @@ eval:
   <img src="assets/benchmark1.png" alt="standard sts tasks" width="600"/>
    <br>
   <em>standard STS tasks</em>
-</p
+</p>
 
 
 
@@ -254,7 +254,7 @@ eval:
   <img src="assets/benchmark2.png" alt="downstream sts tasks" width="600"/>
    <br>
   <em>Downstream classification tasks</em>
-</
+</p>
 
 ## 🕸️ Custom Training
 
