@@ -18,7 +18,7 @@ Thư viện mạnh mẽ để huấn luyện và suy luận sentence embeddings 
 
 **📘 Tài liệu chi tiết:** https://angle.readthedocs.io/en/latest/index.html
 
-**📦 Cài đặt nhanh:**
+**📦 Cài đặt nhanh để sử dụng vào 1 bài toán khác:**
 ```bash
 pip install angle-emb
 ```
