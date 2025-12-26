@@ -18,6 +18,7 @@ Angle_Embedding/
 ├── .gitignore              # Danh sách file/thư mục bị loại khỏi git
 ├── .python-version         # Phiên bản Python sử dụng cho dự án
 ├── .readthedocs.yaml       # Cấu hình build tài liệu trên ReadTheDocs
+├── notebook/  
 ├── angle_emb/              # Thư viện chính: mã nguồn AnglE (model, trainer, loss, utils)
 │   ├── __init__.py         # Khởi tạo package Python
 │   ├── angle.py            # Định nghĩa lớp AnglE và các chức năng chính
@@ -149,10 +150,12 @@ python eval_nli.py \
 python -m pip install -U angle_emb
 $ cd examples/NLI
 ```
-##### 3. Tải xuống dữ liệu
+##### 3. Tải xuống và chuẩn bị dữ liệu
 
 ###### 3.1 Tải xuống dữ liệu multi_nli + snli:
-   
+
+các nli datasets sẽ có 3 cột gồm các premise, hypothesis, label
+
 ```bash
 $ cd data
 $ sh download_data.sh
@@ -160,11 +163,16 @@ $ sh download_data.sh
 
 ###### 3.2 Tải xuống STS datasets
 
+các sts datasets sẽ có 3 cột tương ứng sentence1 , sentence2, score
+
 ```bash
 $
 $ cd SentEval/data/downstream
 $ bash download_dataset.sh
 ```
+###### 3.3 Chuẩn hóa lại format
+- Dữ liệu đã được chuẩn hóa trong code thành dạng 'text1', 'text2', 'label'
+
 ##### 4. Training
 ###### 4.1 Bert
 train:
@@ -225,175 +233,10 @@ eval:
 
 ## 🕸️ Custom Training
 
-> 💡 For complete details, see the [official training documentation](https://angle.readthedocs.io/en/latest/notes/training.html).
 
 ---
 
-### 🗂️ Step 1: Prepare Your Dataset
 
-AnglE supports three dataset formats. Choose based on your task:
-
-| Format | Columns | Description | Use Case |
-|--------|---------|-------------|----------|
-| **Format A** | `text1`, `text2`, `label` | Paired texts with similarity scores (0-1) | Similarity scoring |
-| **Format B** | `query`, `positive` | Query-document pairs | Retrieval without hard negatives |
-| **Format C** | `query`, `positive`, `negative` | Query with positive and negative samples | Contrastive learning |
-
-**Notes:**
-- All formats use HuggingFace `datasets.Dataset`
-- `text1`, `text2`, `query`, `positive`, and `negative` can be `str` or `List[str]` (random sampling for lists)
-
----
-
-### 🚂 Step 2: Training Methods
-
-#### Option A: CLI Training (Recommended)
-
-**Single GPU:**
-
-```bash
-CUDA_VISIBLE_DEVICES=0 angle-trainer --help
-```
-
-**Multi-GPU with FSDP:**
-
-```bash
-CUDA_VISIBLE_DEVICES=0,1,2,3 WANDB_MODE=disabled accelerate launch \
-  --multi_gpu \
-  --num_processes 4 \
-  --main_process_port 2345 \
-  --config_file examples/FSDP/fsdp_config.yaml \
-  -m angle_emb.angle_trainer \
-  --gradient_checkpointing 1 \
-  --use_reentrant 0 \
-  ...
-```
-
-**Multi-GPU (Standard):**
-
-```bash
-CUDA_VISIBLE_DEVICES=0,1,2,3 WANDB_MODE=disabled accelerate launch \
-  --multi_gpu \
-  --num_processes 4 \
-  --main_process_port 2345 \
-  -m angle_emb.angle_trainer \
-  --model_name_or_path YOUR_MODEL \
-  --train_name_or_path YOUR_DATASET \
-  ...
-```
-
-📁 More examples: [examples/Training](examples/Training)
-
----
-
-#### Option B: Python API Training
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1h28jHvv_x-0fZ0tItIMjf8rJGp3GcO5V?usp=sharing)
-
-```python
-from datasets import load_dataset
-from angle_emb import AnglE
-
-# Step 1: Load pretrained model
-angle = AnglE.from_pretrained(
-    'SeanLee97/angle-bert-base-uncased-nli-en-v1',
-    max_length=128,
-    pooling_strategy='cls'
-).cuda()
-
-# Step 2: Prepare dataset (Format A example)
-ds = load_dataset('mteb/stsbenchmark-sts')
-ds = ds.map(lambda obj: {
-    "text1": str(obj["sentence1"]),
-    "text2": str(obj['sentence2']),
-    "label": obj['score']
-})
-ds = ds.select_columns(["text1", "text2", "label"])
-
-# Step 3: Train the model
-angle.fit(
-    train_ds=ds['train'].shuffle(),
-    valid_ds=ds['validation'],
-    output_dir='ckpts/sts-b',
-    batch_size=32,
-    epochs=5,
-    learning_rate=2e-5,
-    save_steps=100,
-    eval_steps=1000,
-    warmup_steps=0,
-    gradient_accumulation_steps=1,
-    loss_kwargs={
-        'cosine_w': 1.0,
-        'ibn_w': 1.0,
-        'angle_w': 0.02,
-        'cosine_tau': 20,
-        'ibn_tau': 20,
-        'angle_tau': 20
-    },
-    fp16=True,
-    logging_steps=100
-)
-
-# Step 4: Evaluate
-corrcoef = angle.evaluate(ds['test'])
-print('Spearman\'s corrcoef:', corrcoef)
-```
-
----
-
-### ⚙️ Advanced Configuration
-
-#### Training Special Models
-
-| Model Type | CLI Flags | Description |
-|------------|-----------|-------------|
-| **LLM** | `--is_llm 1` + LoRA params | Must manually enable LLM mode |
-| **BiLLM** | `--apply_billm 1 --billm_model_class LlamaForCausalLM` | Bidirectional LLMs ([guide](https://github.com/WhereIsAI/BiLLM)) |
-| **Espresso (ESE)** | `--apply_ese 1 --ese_kl_temperature 1.0 --ese_compression_size 256` | Matryoshka-style embeddings |
-
-#### Applying Prompts
-
-| Format | Flag | Applies To |
-|--------|------|------------|
-| Format A | `--text_prompt "text: {text}"` | Both `text1` and `text2` |
-| Format B/C | `--query_prompt "query: {text}"` | `query` field |
-| Format B/C | `--doc_prompt "document: {text}"` | `positive` and `negative` fields |
-
-#### Column Mapping (Legacy Compatibility)
-
-Adapt old datasets without modification:
-
-```bash
-# CLI
---column_rename_mapping "text:query"
-
-# Python
-column_rename_mapping={"text": "query"}
-```
-
-#### Model Conversion
-
-Convert trained models to `sentence-transformers` format:
-
-```bash
-python scripts/convert_to_sentence_transformers.py --help
-```
-
----
-
-### 💡 Fine-tuning Tips
-
-📖 [Full documentation](https://angle.readthedocs.io/en/latest/notes/training.html#fine-tuning-tips)
-
-| Format | Recommendation |
-|--------|----------------|
-| **Format A** | Increase `cosine_w` or decrease `ibn_w` |
-| **Format B** | Only tune `ibn_w` and `ibn_tau` |
-| **Format C** | Set `cosine_w=0`, `angle_w=0.02`, and configure `cln_w` + `ibn_w` |
-
-**Prevent Catastrophic Forgetting:**
-- Set `teacher_name_or_path` for knowledge distillation
-- Use same model path for self-distillation
-- ⚠️ Ensure teacher and student use the **same tokenizer**
 
 ---
 
@@ -405,35 +248,3 @@ python scripts/convert_to_sentence_transformers.py --help
 | **Inference** | ✅ Full | Convert trained models: `examples/convert_to_sentence_transformers.py` |
 
 
-# 🫡 Citation
-
-If you use our code and pre-trained models, please support us by citing our work as follows:
-
-```bibtex
-@article{li2023angle,
-  title={AnglE-optimized Text Embeddings},
-  author={Li, Xianming and Li, Jing},
-  journal={arXiv preprint arXiv:2309.12871},
-  year={2023}
-}
-```
-
-# 📜 ChangeLogs
-
-| 📅 | Description |
-|----|------|
-| 2025 Jan |  **v0.6.0 - Major refactoring** 🎉: <br/>• Removed `AngleDataTokenizer` - no need to pre-tokenize datasets!<br/>• Removed `DatasetFormats` class - use string literals ('A', 'B', 'C')<br/>• Removed auto-detection of LLM models - set `is_llm` manually<br/>• Renamed `--prompt_template` to `--text_prompt` (Format A only)<br/>• Added `--query_prompt` and `--doc_prompt` for Format B/C<br/>• Added `--column_rename_mapping` to adapt old datasets without modification<br/>• Updated data formats: Format B/C now use `query`, `positive`, `negative` fields<br/>• Support list-based sampling in Format B/C<br/>• Updated examples to use `accelerate launch`<br/>• See [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md) for upgrade instructions |
-| 2024 May 21 |  support Espresso Sentence Embeddings  |
-| 2024 Feb 7 |  support training with only positive pairs (Format C: query, positive)  |
-| 2023 Dec 4 |  Release a universal English sentence embedding model: [WhereIsAI/UAE-Large-V1](https://huggingface.co/WhereIsAI/UAE-Large-V1)  |
-| 2023 Nov 2 |  Release an English pretrained model: `SeanLee97/angle-llama-13b-nli` |
-| 2023 Oct 28 |  Release two chinese pretrained models: `SeanLee97/angle-roberta-wwm-base-zhnli-v1` and `SeanLee97/angle-llama-7b-zhnli-v1`; Add chinese README.md |
-
-# 📧 Contact
-
-If you have any questions or suggestions, please feel free to contact us via email: xmlee97@gmail.com
-
-# © License
-
-This project is licensed under the MIT License.
-For the pretrained models, please refer to the corresponding license of the models.
