@@ -245,7 +245,7 @@ eval:
 <p align="center">
   <img src="assets/benchmark1.png" alt="standard sts tasks" width="600"/>
    <br>
-  <em>standard STS tasks</em>
+  <em>Standard STS tasks</em>
 </p>
 
 
@@ -256,20 +256,29 @@ eval:
   <em>Downstream classification tasks</em>
 </p>
 
-## 🕸️ Custom Training
+## 🕸️ Custom Training (Trên notebook demo)
 
+### Notebook Train_AOE_vietnamese.ipynb
 
----
+#### Backbone
 
+Sử dụng backbone phobert-base-v2 thay cho bert-base
 
+#### Dữ liệu huấn luyện
+Mô hình được train 2 lần thông qua 2 bộ dataset:
 
----
+**1) Dataset: anti-ai/ViNLI-SimCSE-supervised_v2**
 
-### 🔄 Integration with sentence-transformers
+Dataset gồm 3 cột : Anchor( câu gốc), Entailment (câu suy diễn), Contradiction(câu mâu thuẫn)
+Sau khi đổi lại format: 'query', 'pos', 'hard_neg'
 
-| Task | Status | Notes |
-|------|--------|-------|
-| **Training** | ⚠️ Partial | SentenceTransformers has [AnglE loss](https://sbert.net/docs/package_reference/sentence_transformer/losses.html#angleloss), but use official `angle_emb` for best results |
-| **Inference** | ✅ Full | Convert trained models: `examples/convert_to_sentence_transformers.py` |
+**2) Dataset: doanhieung/stsbenchmark-sts-vi**
+Dataset gồm 3 cột: sentence1, sentence2, score
+Sau khi đổi lại format: 'text1', 'text2', 'label'
+
+### Notebook AoE_Sentiment_Analysis.ipynb
+
+So sánh AoE đã pretrain trên 2 datasets với các embedding PhoBert, sup-SimCSE-Vietnamese-phobert-base, dangvantuan/vietnamese-embedding trên task sentiment analysis
+
 
 
