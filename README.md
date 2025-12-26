@@ -107,33 +107,23 @@ pip install -e .
 ```
 
 
+## 🚀 Thực nghiệm trên dataset
+
+### 🤗 HF Pretrained Models
+
+[AnglE NLI Sentence Embedding](https://huggingface.co/collections/SeanLee97/angle-nli-sentence-embeddings-6646de386099d0472c5e21c0)
+
+# English STS Results
+
+| Model | STS12 | STS13 | STS14 | STS15 | STS16 | STSBenchmark | SICKRelatedness |  Avg. |
+| ------- |-------|-------|-------|-------|-------|--------------|-----------------|-------|
+| [SeanLee97/angle-llama-7b-nli-20231027](https://huggingface.co/SeanLee97/angle-llama-7b-nli-20231027) | 78.68 | 90.58 | 85.49 | 89.56 | 86.91 |    88.92     |      81.18      | 85.90 |
+| [SeanLee97/angle-llama-7b-nli-v2](https://huggingface.co/SeanLee97/angle-llama-7b-nli-v2) | 79.00 | 90.56 | 85.79 | 89.43 | 87.00 |    88.97     |      80.94      | 85.96 |
+| [SeanLee97/angle-llama-13b-nli](https://huggingface.co/SeanLee97/angle-llama-13b-nli)  | 79.33 | 90.65 | 86.89 | 90.45 | 87.32 |    89.69     |      81.32       | **86.52** |
+| [SeanLee97/angle-bert-base-uncased-nli-en-v1](https://huggingface.co/SeanLee97/angle-bert-base-uncased-nli-en-v1) | 75.09 | 85.56 | 80.66 | 86.44 | 82.47 | 85.16 | 81.23 | 82.37 |
 
 
-## 🤗 Official Pretrained Models
-
-BERT-based models:
-
-|  🤗 HF | Max Tokens | Pooling Strategy | Scenario |
-|----|------|------|------|
-| [WhereIsAI/UAE-Large-V1](https://huggingface.co/WhereIsAI/UAE-Large-V1) | 512 | cls | English, General-purpose |
-| [WhereIsAI/UAE-Code-Large-V1](https://huggingface.co/WhereIsAI/UAE-Code-Large-V1) |  512 | cls | Code Similarity |
-| [WhereIsAI/pubmed-angle-base-en](https://huggingface.co/WhereIsAI/pubmed-angle-base-en) |  512 | cls | Medical Similarity |
-| [WhereIsAI/pubmed-angle-large-en](https://huggingface.co/WhereIsAI/pubmed-angle-large-en) |  512 | cls | Medical Similarity |
-
-LLM-based models:
-
-| 🤗 HF (lora weight) | Backbone | Max Tokens | Prompts |  Pooling Strategy | Scenario  |
-|----|------|------|------|------|------|
-| [SeanLee97/angle-llama-13b-nli](https://huggingface.co/SeanLee97/angle-llama-13b-nli) | NousResearch/Llama-2-13b-hf | 4096 | `Prompts.A` | last token | English, Similarity Measurement | 
-| [SeanLee97/angle-llama-7b-nli-v2](https://huggingface.co/SeanLee97/angle-llama-7b-nli-v2) | NousResearch/Llama-2-7b-hf | 4096 | `Prompts.A` | last token | English, Similarity Measurement | 
-
-
-**💡 You can find more third-party embeddings trained with AnglE in [HuggingFace Collection](https://huggingface.co/collections/SeanLee97/angle-based-embeddings-669a181354729d168a6ead9b)**
-
-
-## 🚀 Quick Start
-
-### ⬇️ Installation
+### Huấn luyện NLI 
 
 use uv 
 
@@ -149,205 +139,10 @@ pip install -U angle-emb
 
 ---
 
-### 🔍 Inference
 
-#### 1️⃣ BERT-based Models
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1QJcA2Mvive4pBxWweTpZz9OgwvE42eJZ?usp=sharing)
-
-**Option A: With Prompts (for Retrieval Tasks)**
-
-Use prompts with `{text}` as placeholder. Check available prompts via `Prompts.list_prompts()`.
-
-```python
-from angle_emb import AnglE, Prompts
-from angle_emb.utils import cosine_similarity
-
-# Load model
-angle = AnglE.from_pretrained('WhereIsAI/UAE-Large-V1', pooling_strategy='cls').cuda()
-
-# Encode query with prompt, documents without prompt
-qv = angle.encode(['what is the weather?'], to_numpy=True, prompt=Prompts.C)
-doc_vecs = angle.encode([
-    'The weather is great!',
-    'it is rainy today.',
-    'i am going to bed'
-], to_numpy=True)
-
-# Calculate similarity
-for dv in doc_vecs:
-    print(cosine_similarity(qv[0], dv))
-```
-
-**Option B: Without Prompts (for Similarity Tasks)**
-
-```python
-from angle_emb import AnglE
-from angle_emb.utils import cosine_similarity
-
-# Load model
-angle = AnglE.from_pretrained('WhereIsAI/UAE-Large-V1', pooling_strategy='cls').cuda()
-
-# Encode documents
-doc_vecs = angle.encode([
-    'The weather is great!',
-    'The weather is very good!',
-    'i am going to bed'
-])
-
-# Calculate pairwise similarity
-for i, dv1 in enumerate(doc_vecs):
-    for dv2 in doc_vecs[i+1:]:
-        print(cosine_similarity(dv1, dv2))
-```
 
 ---
 
-#### 2️⃣ LLM-based Models
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1QJcA2Mvive4pBxWweTpZz9OgwvE42eJZ?usp=sharing)
-
-For LoRA-based models, specify both the backbone model and LoRA weights. **Always set `is_llm=True`** for LLM models.
-
-```python
-import torch
-from angle_emb import AnglE, Prompts
-from angle_emb.utils import cosine_similarity
-
-# Load LLM with LoRA weights
-angle = AnglE.from_pretrained(
-    'NousResearch/Llama-2-7b-hf',
-    pretrained_lora_path='SeanLee97/angle-llama-7b-nli-v2',
-    pooling_strategy='last',
-    is_llm=True,
-    torch_dtype=torch.float16
-).cuda()
-
-# Encode with prompt
-doc_vecs = angle.encode([
-    'The weather is great!',
-    'The weather is very good!',
-    'i am going to bed'
-], prompt=Prompts.A)
-
-# Calculate similarity
-for i, dv1 in enumerate(doc_vecs):
-    for dv2 in doc_vecs[i+1:]:
-        print(cosine_similarity(dv1, dv2))
-```
-
----
-
-#### 3️⃣ BiLLM-based Models
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1QJcA2Mvive4pBxWweTpZz9OgwvE42eJZ?usp=sharing)
-
-Enable bidirectional LLMs with `apply_billm=True` and specify the model class.
-
-```python
-import os
-import torch
-from angle_emb import AnglE
-from angle_emb.utils import cosine_similarity
-
-# Set BiLLM environment variable
-os.environ['BiLLM_START_INDEX'] = '31'
-
-# Load BiLLM model
-angle = AnglE.from_pretrained(
-    'NousResearch/Llama-2-7b-hf',
-    pretrained_lora_path='SeanLee97/bellm-llama-7b-nli',
-    pooling_strategy='last',
-    is_llm=True,
-    apply_billm=True,
-    billm_model_class='LlamaForCausalLM',
-    torch_dtype=torch.float16
-).cuda()
-
-# Encode with custom prompt
-doc_vecs = angle.encode([
-    'The weather is great!',
-    'The weather is very good!',
-    'i am going to bed'
-], prompt='The representative word for sentence {text} is:"')
-
-# Calculate similarity
-for i, dv1 in enumerate(doc_vecs):
-    for dv2 in doc_vecs[i+1:]:
-        print(cosine_similarity(dv1, dv2))
-```
-
----
-
-#### 4️⃣ Espresso/Matryoshka Models
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1QJcA2Mvive4pBxWweTpZz9OgwvE42eJZ?usp=sharing)
-
-Truncate layers and embedding dimensions for flexible model compression.
-
-```python
-from angle_emb import AnglE
-from angle_emb.utils import cosine_similarity
-
-# Load model
-angle = AnglE.from_pretrained('mixedbread-ai/mxbai-embed-2d-large-v1', pooling_strategy='cls').cuda()
-
-# Truncate to specific layer
-angle = angle.truncate_layer(layer_index=22)
-
-# Encode with truncated embedding size
-doc_vecs = angle.encode([
-    'The weather is great!',
-    'The weather is very good!',
-    'i am going to bed'
-], embedding_size=768)
-
-# Calculate similarity
-for i, dv1 in enumerate(doc_vecs):
-    for dv2 in doc_vecs[i+1:]:
-        print(cosine_similarity(dv1, dv2))
-```
-
----
-
-#### 5️⃣ Third-party Models
-
-Load any transformer-based models (e.g., `sentence-transformers`, `BAAI/bge`, etc.) using AnglE.
-
-```python
-from angle_emb import AnglE
-
-# Load third-party model
-model = AnglE.from_pretrained('mixedbread-ai/mxbai-embed-large-v1', pooling_strategy='cls').cuda()
-
-# Encode text
-vec = model.encode('hello world', to_numpy=True)
-print(vec)
-```
-
----
-
-### ⚡ Batch Inference
-
-Speed up inference with the `batched` library (recommended for large-scale processing).
-
-```bash
-uv pip install batched
-```
-
-```python
-import batched
-from angle_emb import AnglE
-
-# Load model
-model = AnglE.from_pretrained("WhereIsAI/UAE-Large-V1", pooling_strategy='cls').cuda()
-
-# Enable dynamic batching
-model.encode = batched.dynamically(model.encode, batch_size=64)
-
-# Encode large batch
-vecs = model.encode([
-    'The weather is great!',
-    'The weather is very good!',
-    'i am going to bed'
-] * 50)
-```
 
 ## 🕸️ Custom Training
 
