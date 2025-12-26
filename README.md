@@ -282,7 +282,19 @@ Sau khi đổi lại format: 'text1', 'text2', 'label'
 
 ### Notebook AoE_Sentiment_Analysis.ipynb
 
-So sánh AoE đã pretrain trên 2 datasets với các embedding PhoBert, sup-SimCSE-Vietnamese-phobert-base, dangvantuan/vietnamese-embedding trên task sentiment analysis
+So sánh AoE đã pretrain trên 2 datasets với các embedding PhoBert, sup-SimCSE-Vietnamese-phobert-base, dangvantuan/vietnamese-embedding trên **task sentiment analysis**
 
+#### Dữ liệu huấn luyện
 
+**Dataset: uitnlp/vietnamese_students_feedback** 
+
+Dữ liệu gồm 2 cột chính: sentence và sentiment ( postive, negative, neutral)
+
+Dữ liệu gồm 11426 dòng cho train và 3166 dòng cho test
+
+#### Độ đo sử dụng
+
+Precision, Recall, F1-score, Accuracy
+
+## Bảng so sánh giữa các model trên task sentiment analysis
 
