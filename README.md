@@ -141,6 +141,17 @@ python eval_nli.py \
 --model_name_or_path SeanLee97/angle-llama-7b-nli-v2 \
 --pooling_strategy cls_avg
 ```
+
+**BERT-BASE cho downstream task**
+
+```bash
+python eval_ese_nli.py \
+  --model_name_or_path SeanLee97/angle-bert-base-uncased-nli-en-v1 \
+  --pooling_strategy cls_avg \
+  --mode test \
+  --task_set transfer
+```
+
 #### B) Cách 2: Huấn luyện NLI cho STS Benchmark
 ##### 1. Chuẩn bị gpu enviroment
 
