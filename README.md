@@ -37,6 +37,8 @@ Angle_Embedding/
 ├── 📚 .readthedocs.yaml       # Cấu hình build tài liệu trên ReadTheDocs
 │
 ├── 📓 notebook/               # Jupyter notebooks demo
+│   ├── AOE_Sentiment_Analysis.ipynb           # Ứng dụng vào bài toán sentiment analysis
+│   ├── Train_AOE_vietnamese.ipynb         #pretrain trên dataset tiếng việt
 │
 ├── 🔧 angle_emb/              # Thư viện chính: mã nguồn AnglE
 │   ├── __init__.py           # Khởi tạo package Python
