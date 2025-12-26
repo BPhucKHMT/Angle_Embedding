@@ -327,6 +327,10 @@ Mô hình được train 2 lần thông qua 2 bộ dataset:
 - Dataset gồm 3 cột: `sentence1`, `sentence2`, `score`
 - Sau khi đổi lại format: `'text1'`, `'text2'`, `'label'`
 
+### 📏  Độ đo sử dụng
+
+- Các độ đo như lúc paper test với bộ dữ liệu tiếng anh ở trên
+
 ---
 
 ### 📓 Notebook: AoE_Sentiment_Analysis.ipynb
