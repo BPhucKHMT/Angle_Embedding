@@ -106,10 +106,7 @@ conda activate angle
 pip install -e .
 ```
 
-### Cách 2: sử dụng uv
 
-
-📅 Dec, 2023 | AnglE achieves SOTA performance on the STS Bechmark Semantic Textual Similarity! 
 
 
 ## 🤗 Official Pretrained Models
