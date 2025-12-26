@@ -1,7 +1,9 @@
 <small>EN | [简体中文](README_zh.md) </small>
 
-# AnglE 📐
-> <small>Sponsored by <a href="https://www.mixedbread.ai/">Mixedbread</a></small>
+# Đồ án môn học CS221: AnglE-optimized Embeddings 📐
+<p align="center">
+  <img src="assets/framework.png" alt="Overall Framework" width="600"/>
+</p>
 
 **For more detailed usage, please read the 📘 document:** https://angle.readthedocs.io/en/latest/index.html
 
