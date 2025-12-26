@@ -109,18 +109,6 @@ Angle_Embedding/
 
 ---
 
-## 🎯 Tính năng chính
-
-### **Backbones được hỗ trợ:**
-- ✅ BERT-based models (BERT, RoBERTa, ModernBERT, etc.)
-- ✅ LLM-based models (LLaMA, Mistral, Qwen, etc.)
-- ✅ Bi-directional LLM-based models ([BiLLM](https://github.com/WhereIsAI/BiLLM))
-
-### **Training:**
-- 🖥️ Single-GPU training
-- 🖥️🖥️ Multi-GPU training
-
----
 
 ## 🛠️ Cài đặt
 
