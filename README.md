@@ -110,7 +110,7 @@ pip install -e .
 ## 🚀 Thực nghiệm 
 
 ### STS Benchmark
-#### A) Sử dụng pretrain model
+#### A) Cách 1: Sử dụng pretrain models của tác giả
 Sử dụng các model đã pretrain dưới đây để đánh giá nhanh
 ##### 🤗 HF Pretrained Models
 
@@ -140,7 +140,7 @@ python eval_nli.py \
 --model_name_or_path SeanLee97/angle-llama-7b-nli-v2 \
 --pooling_strategy cls_avg
 ```
-#### B) Huấn luyện NLI cho STS Benchmark
+#### B) Cách 2: Huấn luyện NLI cho STS Benchmark
 ##### 1. Chuẩn bị gpu enviroment
 
 ##### 2. Cài đặt angle_emb
