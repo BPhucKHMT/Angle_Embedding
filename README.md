@@ -14,26 +14,68 @@ Thư viện này từ paper: [AnglE: Angle-optimized Text Embeddings](https://ar
 ## ✨ Cấu trúc thư mục
 
 ```
-CS221/
-├── README.md                   # File này
-├── instructor-embedding/       # Source code chính
-│   ├── demo.ipynb              # Notebook demo: GTR-T5 vs INSTRUCTOR
-│   ├── train.py                # Script huấn luyện
-│   ├── requirements.txt        # Dependencies
-│   ├── setup.py                # Package setup
-│   ├── instructor.png          # Hình minh họa kiến trúc
-│   │
-│   ├── InstructorEmbedding/    # Core module
-│   │   ├── __init__.py
-│   │   └── instructor.py       # INSTRUCTOR model class
-│   │
-│   ├── input/                  # Training data
-│   │   └── medi-data.json      # MEDI dataset (1.4M+ samples)
-│   │
-│   └── evaluation/             # Evaluation tools
-│       ├── MTEB/               # MTEB benchmark
-│       ├── prompt_retrieval/   # Prompt retrieval evaluation
-│       └── text_evaluation/    # Text evaluation
+Angle_Embedding/
+├── .gitignore              # Danh sách file/thư mục bị loại khỏi git
+├── .python-version         # Phiên bản Python sử dụng cho dự án
+├── .readthedocs.yaml       # Cấu hình build tài liệu trên ReadTheDocs
+├── angle_emb/              # Thư viện chính: mã nguồn AnglE (model, trainer, loss, utils)
+│   ├── __init__.py         # Khởi tạo package Python
+│   ├── angle.py            # Định nghĩa lớp AnglE và các chức năng chính
+│   ├── angle_trainer.py    # Module huấn luyện mô hình AnglE
+│   ├── base.py             # Lớp cơ sở cho các mô hình embedding
+│   ├── evaluation.py       # Đánh giá chất lượng embedding (Spearman, Pearson, ...)
+│   ├── loss.py             # Định nghĩa các hàm loss (Angle, Contrastive, Espresso, ...)
+│   ├── utils.py            # Các hàm tiện ích dùng chung
+│   ├── version.py          # Thông tin phiên bản thư viện
+├── assets/                 # Tài nguyên bổ sung (hình ảnh, biểu đồ, ...)
+├── docs/                   # Tài liệu dự án (Sphinx, hướng dẫn, ghi chú, cấu hình)
+│   ├── conf.py             # Cấu hình Sphinx
+│   ├── index.rst           # Trang chủ tài liệu
+│   ├── Makefile, make.bat  # Script build tài liệu
+│   ├── requirements.txt    # Yêu cầu cài đặt cho tài liệu
+│   └── notes/              # Các ghi chú, hướng dẫn chi tiết
+├── en_results/             # Kết quả đánh giá mô hình tiếng Anh (json, báo cáo)
+│   └── UAE-Large-V1/       # Kết quả cho model UAE-Large-V1
+├── examples/               # Ví dụ sử dụng, notebook, script huấn luyện và đánh giá
+│   ├── Angle-ATEC.ipynb    # Notebook ví dụ cho bộ dữ liệu ATEC
+│   ├── Angle-BQ.ipynb      # Notebook ví dụ cho bộ dữ liệu BQ
+│   ├── Angle-LCQMC.ipynb   # Notebook ví dụ cho bộ dữ liệu LCQMC
+│   ├── Angle-PAWSX.ipynb   # Notebook ví dụ cho bộ dữ liệu PAWSX
+│   ├── multigpu_infer.py   # Ví dụ inference đa GPU
+│   ├── NLI/                # Ví dụ về Natural Language Inference
+│   │   ├── SentEval/       # Bộ toolkit đánh giá embedding (SentEval)
+│   │   │   ├── README.md   # Hướng dẫn sử dụng SentEval
+│   │   │   ├── setup.py    # Cài đặt SentEval
+│   │   │   └── senteval/   # Mã nguồn các task đánh giá (STS, SICK, probing, ...)
+│   │   │       ├── probing.py
+│   │   │       ├── sick.py
+│   │   │       ├── sts.py
+│   │   │       ├── engine.py
+│   │   │       └── tools/
+│   │   │           └── ranking.py
+│   │   ├── eval_nli.py     # Script đánh giá NLI
+│   │   ├── eval_ese_nli.py # Script đánh giá ESE NLI
+│   │   ├── train_nli.py    # Script huấn luyện NLI
+│   │   └── data/           # Script tải dữ liệu NLI
+│   │       └── download_data.sh
+│   └── UAE/                # Ví dụ về Universal AnglE Embeddings
+│       ├── README.md
+│       ├── compute_scores.py # tính điểm
+│       ├── emb_model.py
+│       ├── run_eval_mteb.py # Đánh giá trên MTEB
+│       └── train.py # Huấn luyện mô hình
+├── LICENSE                 # Giấy phép sử dụng mã nguồn (MIT)
+├── MIGRATION_GUIDE.md      # Hướng dẫn nâng cấp phiên bản mới nhất
+├── pyproject.toml          # Cấu hình build và metadata dự án Python
+├── README.md               # Giới thiệu về đồ án
+├── README_2DMSE.md         # Tài liệu về 2D Matryoshka Sentence Embeddings
+├── README_ESE.md           # Tài liệu về Espresso Sentence Embeddings
+├── README_zh.md            # Tài liệu tiếng Trung
+├── requirements.txt        # Yêu cầu cài đặt Python cho dự án
+├── ruff.toml               # Cấu hình linting với ruff
+├── scripts/                # Script tiện ích, chuyển đổi mô hình, xử lý dữ liệu
+│   └── convert_to_sentence_transformer.py
+├── tests/                  # test thử mô hình nhanh
 ```
 
 
