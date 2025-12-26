@@ -1,29 +1,12 @@
-<small>EN | [简体中文](README_zh.md) </small>
-
 # Đồ án môn học CS221: AnglE-optimized Embeddings 📐
 <p align="center">
   <img src="assets/framework.png" alt="Overall Framework" width="600"/>
 </p>
 
-**For more detailed usage, please read the 📘 document:** https://angle.readthedocs.io/en/latest/index.html
-
-<a href="https://arxiv.org/abs/2309.12871">
-    <img src="https://img.shields.io/badge/Arxiv-2309.12871-yellow.svg?style=flat-square" alt="https://arxiv.org/abs/2309.12871" />
-</a>
-<a href="https://pypi.org/project/angle_emb/">
-    <img src="https://img.shields.io/pypi/v/angle_emb?style=flat-square" alt="PyPI version" />
-</a>
-<a href="https://pypi.org/project/angle_emb/">
-    <img src="https://img.shields.io/pypi/dm/angle_emb?style=flat-square" alt="PyPI Downloads" />
-</a>
-<a href="https://angle.readthedocs.io/en/latest/index.html">
-    <img src="https://readthedocs.org/projects/angle/badge/?version=latest&style=flat-square" alt="Read the docs" />
-</a>
-
-
+**Về chi tiết cách sử dụng, mọi người có thể đọc tại 📘 tài liệu này:** https://angle.readthedocs.io/en/latest/index.html
 📢 **Train/Infer Powerful Sentence Embeddings with AnglE.**
-This library is from the paper: [AnglE: Angle-optimized Text Embeddings](https://arxiv.org/abs/2309.12871). It allows for training state-of-the-art BERT/LLM-based sentence embeddings with just a few lines of code. AnglE is also a general sentence embedding inference framework, allowing for infering a variety of transformer-based sentence embeddings.
-
+Có thể sử dụng thư viện để áp dụng vào bài toán khác 1 cách tiện lợi bằng cách tải thông qua: https://pypi.org/project/angle-emb/ hoặc lệnh pip install angle-emb
+Thư viện này từ paper: [AnglE: Angle-optimized Text Embeddings](https://arxiv.org/abs/2309.12871).
 ## ✨ Features
 
 **Loss**:
