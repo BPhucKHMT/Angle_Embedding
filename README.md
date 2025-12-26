@@ -110,7 +110,7 @@ pip install -e .
 ## 🚀 Thực nghiệm 
 
 ### STS Benchmark
-#### Sử dụng pretrain model
+#### A) Sử dụng pretrain model
 Sử dụng các model đã pretrain dưới đây để đánh giá nhanh
 ##### 🤗 HF Pretrained Models
 
@@ -140,7 +140,7 @@ python eval_nli.py \
 --model_name_or_path SeanLee97/angle-llama-7b-nli-v2 \
 --pooling_strategy cls_avg
 ```
-#### Huấn luyện NLI cho STS Benchmark
+#### B) Huấn luyện NLI cho STS Benchmark
 ##### 1. Chuẩn bị gpu enviroment
 
 ##### 2. Cài đặt angle_emb
@@ -151,14 +151,14 @@ $ cd examples/NLI
 ```
 ##### 3. Tải xuống dữ liệu
 
-1) Tải xuống dữ liệu multi_nli + snli:
+3.1 Tải xuống dữ liệu multi_nli + snli:
    
 ```bash
 $ cd data
 $ sh download_data.sh
 ```
 
-2) Tải xuống STS datasets
+3.2 Tải xuống STS datasets
 
 ```bash
 $
@@ -167,6 +167,7 @@ $ bash download_dataset.sh
 ```
 ##### 4. Training
 ###### 4.1 Bert
+train:
 
 ```bash
 python -m angle_emb.angle_trainer \
@@ -180,8 +181,6 @@ python -m angle_emb.angle_trainer \
 --angle_w 1.0 \
 --angle_tau 20.0 \
 --learning_rate 5e-5 \
---logging_steps 10 \
---save_steps 100 \
 --warmup_steps 50 \
 --batch_size 128 \
 --seed 42 \
@@ -189,7 +188,39 @@ python -m angle_emb.angle_trainer \
 --epochs 10 \
 --fp16 1
 ```
----
+eval: 
+```bash
+ python eval_nli.py \
+--model_name_or_path SeanLee97/bert-base-nli-test-0728 \
+--pooling_strategy cls_avg
+```
+
+###### 4.2 LLM-based
+train: 
+
+```bash
+python -m angle_emb.angle_trainer \
+--model_name_or_path NousResearch/Llama-2-7b-hf \
+--train_name_or_path SeanLee97/all_nli_angle_format_b \
+--save_dir ckpts/NLI-STS-angle-llama-7b \
+--query_prompt 'Summarize sentence "{text}" in one word:"' \
+--is_llm 1 \
+--apply_lora 1 \
+--w2 35 --learning_rate 1e-4 --maxlen 50 \
+--lora_r 32 --lora_alpha 32 --lora_dropout 0.1 \
+--batch_size 120 --seed 42 --do_eval 0 --load_kbit 4 --gradient_accumulation_steps 4 --epochs 1
+```
+
+eval:
+
+```bash
+ python eval_nli.py \
+--model_name_or_path NousResearch/Llama-2-7b-hf \
+--lora_name_or_path SeanLee97/angle-llama-7b-nli \
+--pooling_strategy last \
+--is_llm 1
+```
+
 
 
 ## 🕸️ Custom Training
