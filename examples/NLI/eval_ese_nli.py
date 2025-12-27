@@ -8,7 +8,7 @@ import logging
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
 
 import torch
-import fcntl
+#import fcntl
 import time
 import argparse
 from prettytable import PrettyTable
