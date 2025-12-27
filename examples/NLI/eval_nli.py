@@ -3,7 +3,7 @@
 import sys
 import os
 import logging
-import fcntl
+#import fcntl
 import time
 import argparse
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
