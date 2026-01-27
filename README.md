@@ -108,6 +108,93 @@ Angle_Embedding/
 ```
 
 ---
+# AnglE Embedding - Vietnamese NLP Project
+
+Dự án training và đánh giá AnglE embedding models cho tiếng Việt:
+- **Train_AOE_vietnamese.ipynb**: Train model với triplet learning + fine-tune trên STS benchmark
+- **AoE_Sentiment_Analysis.ipynb**: So sánh hiệu suất các embedding models trên sentiment analysis
+
+---
+
+## Notebook 1: Train_AOE_vietnamese.ipynb
+
+
+
+### Cấu hình MLflow
+```python
+import dagshub
+dagshub.init(repo_owner='baophuc2005', repo_name='aoe-tpp', mlflow=True)
+
+mlflow.set_tracking_uri("https://dagshub.com/baophuc2005/aoe-tpp.mlflow")
+mlflow.set_experiment("angle-triplet")
+```
+
+### Datasets
+
+**Round 1: Triplet Learning**
+- Dataset: `anti-ai/ViNLI-SimCSE-supervised_v2`
+- Format: anchor, positive, hard_negative
+- Split: 95% train / 5% validation
+
+**Round 2: STS Fine-tuning**
+- Dataset: `doanhieung/stsbenchmark-sts-vi`
+- Format: sentence pairs với similarity score (0-1)
+- Split: 90% train / 10% validation
+
+**Evaluation**
+- Dataset: `anti-ai/ViSTS` (6 subsets: STS-B, STS-Sickr, STS12-15)
+- Metric: Spearman correlation
+
+### Hyperparameters
+
+**Round 1 (Triplet Training)**
+- Base model: `vinai/phobert-base-v2`
+- Batch size: 256
+- Epochs: 5
+- Learning rate: 2e-5
+- Warmup steps: 200
+- Pooling: CLS token
+- Loss weights: cosine_w=1.0, ibn_w=1.0, angle_w=0.02
+- Output: `checkpoints/best_model_final`
+
+**Round 2 (STS Fine-tuning)**
+- Base model: `checkpoints/best_model_final`
+- Batch size: 64
+- Epochs: 10
+- Learning rate: 1e-5
+- Warmup steps: 0
+- Loss weights: cosine_w=1.0, ibn_w=1.0, angle_w=0.02
+- Output: `checkpoints/best_model_sts_completev2`
+
+### Cách chạy
+Chạy tuần tự các cells trong notebook. Training progress được track trên [MLflow UI](https://dagshub.com/user-name/repo-name.mlflow).
+
+---
+
+## Notebook 2: AoE_Sentiment_Analysis.ipynb
+
+### Dataset
+- Dataset: `uitnlp/vietnamese_students_feedback` (UIT-VSFC)
+- Task: Sentiment classification (3 classes)
+- Labels: 0=Tiêu cực, 1=Trung tính, 2=Tích cực
+- Splits: train, test
+
+### Models được test
+1. `VoVanPhuc/sup-SimCSE-VietNamese-phobert-base`
+2. `dangvantuan/vietnamese-embedding`
+3. `vinai/phobert-base-v2`
+4. `vinai/phobert-large`
+5. Model AnglE đã train (load từ MLflow với RUN_ID: `your-run-id`)
+
+### Phương pháp đánh giá
+- Extract embeddings từ models (CLS pooling, batch_size=32)
+- Train Logistic Regression classifier
+- Đánh giá: Precision, Recall, F1-score
+
+### Cách chạy
+Chạy lần lượt các cells để test từng model. GPU được tự động sử dụng nếu có sẵn
+
+---
 
 
 ## 🛠️ Cài đặt
